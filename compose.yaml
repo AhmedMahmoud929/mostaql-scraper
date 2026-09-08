@@ -1,0 +1,18 @@
+services:
+  mostaql-monitor:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - path: .env
+        required: true
+    environment:
+      # Keep the SQLite database on the managed Docker volume, not in the image.
+      DATABASE_PATH: /app/data/mostaql.db
+    restart: unless-stopped
+    stop_grace_period: 30s
+    volumes:
+      - mostaql_data:/app/data
+
+volumes:
+  mostaql_data:
